@@ -2,3 +2,6 @@ L1 lin 30 10
 L2 lin 31 50
 L3 add 1 30 31
 L4 add 29 1 31
+L5 sub 3 31 24
+L5 sub 3 31 30
+L6 add 3 31 30
