@@ -8,3 +8,13 @@ L6 add 3 31 30
 L7 mul 5 31 31
 L8 lin 6 10
 L9 div 10 5 6
+L10 out 10
+L11 lin 7 4
+L12 lin 8 1
+L13 add 6 6 6
+L14 sub 7 7 8
+L15 out 7
+L16 bnz 7 L13
+
+
+
