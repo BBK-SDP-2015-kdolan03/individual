@@ -19,7 +19,7 @@ public class BnzInstruction extends Instruction {
 	public void execute(Machine m) {
 		if (m.getRegisters().getRegister(op1) != 0) {
 			int index = m.getLabels().indexOf(op2);
-			if (index > 0) {
+			if (index != -1) {
 				m.setPc(index);
 			}
 		}
