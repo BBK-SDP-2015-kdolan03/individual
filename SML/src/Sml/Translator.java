@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.IllegalAccessException;
 
 /*
  * The translator of a <b>S</b><b>M</b>al<b>L</b> program.
@@ -73,16 +76,96 @@ public class Translator {
 	// removed. Translate line into an instruction with label label
 	// and return the instruction
 	public Instruction getInstruction(String label) {
-		int s1; // Possible operands of the instruction
-		int s2;
-		int r;
-		int x;
-		String l2;
+		
+		//return switchInstruction(label);
 
 		if (line.equals(""))
 			return null;
 
 		String ins = scan();
+			
+		String subclass = "Sml." + Character.toUpperCase(ins.charAt(0)) + ins.substring(1, 3) + "Instruction";
+		return reflectionInstruction(label, subclass);	
+	}
+	
+	private Instruction reflectionInstruction(String label, String className)
+	{	
+		try {
+			Class<?> c = Class.forName(className);
+			try {
+				Constructor<?> cons[] = c.getConstructors();
+				
+				// Assumes that the second constructor takes the parameters
+				
+				if (cons.length < 2)	// Missing constructor
+					return null;
+				
+				// Read the parameter types
+				
+		        Class<?> params[] = cons[1].getParameterTypes();
+		        if (params.length < 1)
+		        	return null;
+		        
+		        // Create an Object array, of params.length size,
+		        // and initialize the first element to label
+		        
+		        final Object[] args = new Object[params.length];
+		        args[0] = label;
+		        
+		        // Parse the constructors parameters, starting at the second
+
+		        for (int p = 1; p < params.length; ++p)
+		        {  	   	    
+		        	switch(params[p].getTypeName())		// Expects only String or Integer
+		        	{
+		        		case "java.lang.String":
+		        			args[p] = scan();	
+		        			break;
+		        			
+		        		case "int":
+		        			args[p] = scanInt();
+		        			break;
+		        			
+		        		default:
+		        			System.err.println("Error: Unknown parameter type");
+		        			return null;
+		        	}
+		        }
+		        
+		        try
+		        {
+		        	return (Instruction) cons[1].newInstance(args);
+		        }
+		        catch (InstantiationException|IllegalAccessException|IllegalArgumentException|InvocationTargetException e)
+		        {
+		        	e.printStackTrace();
+		        }
+		        
+			} catch ( SecurityException e) {
+				System.err.println(e.getCause());
+				e.printStackTrace();
+			}
+		} catch (ClassNotFoundException e) {
+			System.err.println("Class: "+className+" not found");
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	private Instruction switchInstruction(String label)
+	{
+		int s1; // Possible operands of the instruction
+		int s2;
+		int r;
+		int x;
+		String l2;	// Added for BNZ label
+		
+		if (line.equals(""))
+			return null;
+		
+		String ins = scan();
+		
 		switch (ins) {
 		case "add":
 			r = scanInt();
@@ -115,8 +198,7 @@ public class Translator {
 			s1 = scanInt();
 			l2 = scan();	// Scan label
 			return new BnzInstruction(label, s1, l2);
-		}
-
+		}	
 		return null;
 	}
 
