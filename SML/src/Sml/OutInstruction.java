@@ -1,5 +1,12 @@
 package Sml;
 
+/**
+ * OutInstruction register1
+ * Output (println) the value of register1
+ * 
+ * @author K. Dolan
+ */
+
 public class OutInstruction extends Instruction {
 
 	private int register;

@@ -1,5 +1,12 @@
 package Sml;
 
+/**
+ * MulInstruction register1 register2 register3
+ * Multiply register2 and register3 and store in register1
+ * 
+ * @author K. Dolan
+ */
+
 public class MulInstruction extends Instruction {
 
 	private int result;

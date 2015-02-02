@@ -1,5 +1,12 @@
 package Sml;
 
+/**
+ * BnzInstruction register label
+ * If the register is non-zero branch to label
+ * 
+ * @author K. Dolan
+ */
+
 public class BnzInstruction extends Instruction {
 
 	private int op1;

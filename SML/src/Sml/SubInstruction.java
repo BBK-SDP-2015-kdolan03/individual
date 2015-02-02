@@ -1,5 +1,12 @@
 package Sml;
 
+/**
+ * SubInstruction register1 register2 register3
+ * Subtract register3 from register2 and store in register1
+ * 
+ * @author K. Dolan
+ */
+
 public class SubInstruction extends Instruction {
 	
 	private int result;

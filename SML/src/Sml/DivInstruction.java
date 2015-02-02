@@ -1,5 +1,12 @@
 package Sml;
 
+/**
+ * DivInstruction register1 register2 register3
+ * Divide register2 by register3 and store in register1
+ * 
+ * @author K. Dolan
+ */
+
 public class DivInstruction extends Instruction {
 
 	private int result;

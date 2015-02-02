@@ -1,9 +1,10 @@
 package Sml;
 
 /**
- * This class ....
+ * AddInstruction register1 register2 register3
+ * Add register2 and register3 and store in register1
  * 
- * @author someone
+ * @author K. Dolan
  */
 
 public class AddInstruction extends Instruction {
