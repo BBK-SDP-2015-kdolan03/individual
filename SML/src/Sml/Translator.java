@@ -57,12 +57,13 @@ public class Translator {
 						labels.addLabel(label);
 						program.add(ins);
 					}
+					else{return false;}	
 				}
 
 				try {
 					line = sc.nextLine();
 				} catch (NoSuchElementException ioE) {
-					return false;
+					return true;		// End of file found, was originally false
 				}
 			}
 		} catch (IOException ioE) {
@@ -77,8 +78,6 @@ public class Translator {
 	// and return the instruction
 	public Instruction getInstruction(String label) {
 		
-		//return switchInstruction(label);
-
 		if (line.equals(""))
 			return null;
 
@@ -87,6 +86,13 @@ public class Translator {
 		String subclass = "Sml." + Character.toUpperCase(ins.charAt(0)) + ins.substring(1, 3) + "Instruction";
 		return reflectionInstruction(label, subclass);	
 	}
+	
+	/**
+	 * 
+	 * @param label
+	 * @param className
+	 * @return
+	 */
 	
 	private Instruction reflectionInstruction(String label, String className)
 	{	
@@ -100,19 +106,27 @@ public class Translator {
 				if (cons.length < 2)	// Missing constructor
 					return null;
 				
-				// Read the parameter types
-				
+				/*
+				 * Read the parameter types. Allows for a parameter-less
+				 * instruction, E.g NOP
+				 */
+						
 		        Class<?> params[] = cons[1].getParameterTypes();
 		        if (params.length < 1)
 		        	return null;
 		        
-		        // Create an Object array, of params.length size,
-		        // and initialize the first element to label
+		        /*
+		        * Create an Object array, of params.length size,
+		        * and initialise the first element to label
+		        */
 		        
 		        final Object[] args = new Object[params.length];
 		        args[0] = label;
-		        
-		        // Parse the constructors parameters, starting at the second
+		       		        
+		        /*
+		        * Parse the constructors parameters, starting at the second,
+		        * as the first i the label
+		        */
 
 		        for (int p = 1; p < params.length; ++p)
 		        {  	   	    
@@ -134,6 +148,10 @@ public class Translator {
 		        
 		        try
 		        {
+		        	/* 
+		        	 * Construct a new instance of the xxxInstruction class
+		        	 * using the Object array to initialise the constructor
+		        	 */
 		        	return (Instruction) cons[1].newInstance(args);
 		        }
 		        catch (InstantiationException|IllegalAccessException|IllegalArgumentException|InvocationTargetException e)
@@ -153,54 +171,6 @@ public class Translator {
 		return null;
 	}
 	
-	private Instruction switchInstruction(String label)
-	{
-		int s1; // Possible operands of the instruction
-		int s2;
-		int r;
-		int x;
-		String l2;	// Added for BNZ label
-		
-		if (line.equals(""))
-			return null;
-		
-		String ins = scan();
-		
-		switch (ins) {
-		case "add":
-			r = scanInt();
-			s1 = scanInt();
-			s2 = scanInt();
-			return new AddInstruction(label, r, s1, s2);
-		case "sub":
-			r = scanInt();
-			s1 = scanInt();
-			s2 = scanInt();
-			return new SubInstruction(label, r, s1, s2);
-		case "mul":
-			r = scanInt();
-			s1 = scanInt();
-			s2 = scanInt();
-			return new MulInstruction(label, r, s1, s2);
-		case "div":
-			r = scanInt();
-			s1 = scanInt();
-			s2 = scanInt();
-			return new DivInstruction(label, r, s1, s2);
-		case "out":
-			r = scanInt();
-			return new OutInstruction(label, r);
-		case "lin":
-			x = scanInt();
-			s1 = scanInt();
-			return new LinInstruction(label, x, s1);
-		case "bnz":
-			s1 = scanInt();
-			l2 = scan();	// Scan label
-			return new BnzInstruction(label, s1, l2);
-		}	
-		return null;
-	}
 
 	/*
 	 * Return the first word of line and remove it from line. If there is no

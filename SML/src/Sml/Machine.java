@@ -36,17 +36,25 @@ public class Machine {
 
 		Machine m = new Machine();
 		Translator t = new Translator(args[0]);
-		t.readAndTranslate(m.getLabels(), m.getProg());
+		
+		/*
+		 * Use the returned value to determine if the program is well formed
+		 */
+		if (t.readAndTranslate(m.getLabels(), m.getProg())) {
 
-		System.out.println("Here is the program; it has " + m.getProg().size() + " instructions.");
-		System.out.println(m);
+			System.out.println("Here is the program; it has " + m.getProg().size() + " instructions.");
+			System.out.println(m);
 
-		System.out.println("Beginning program execution.");
-		m.execute();
-		System.out.println("Ending program execution.");
+			System.out.println("Beginning program execution.");
+			m.execute();
+			System.out.println("Ending program execution.");
 
-		System.out.println("Values of registers at program termination:");
-		System.out.println(m.getRegisters() + ".");
+			System.out.println("Values of registers at program termination:");
+			System.out.println(m.getRegisters() + ".");
+		}
+		else {
+			System.out.println("The program has errors and will not be executed");
+		}
 	}
 
 	// Print the program
