@@ -205,3 +205,51 @@ public class Translator {
 		}
 	}
 }
+
+//public Instruction getInstruction(String label) {
+//	int s1; // Possible operands of the instruction
+//	int s2;
+//	int r;
+//	int x;
+//	String l2;
+//
+//	if (line.equals(""))
+//		return null;
+//
+//	String ins = scan();
+//	switch (ins) {
+//	case "add":
+//		r = scanInt();
+//		s1 = scanInt();
+//		s2 = scanInt();
+//		return new AddInstruction(label, r, s1, s2);
+//	case "sub":
+//		r = scanInt();
+//		s1 = scanInt();
+//		s2 = scanInt();
+//		return new SubInstruction(label, r, s1, s2);
+//	case "mul":
+//		r = scanInt();
+//		s1 = scanInt();
+//		s2 = scanInt();
+//		return new MulInstruction(label, r, s1, s2);
+//	case "div":
+//		r = scanInt();
+//		s1 = scanInt();
+//		s2 = scanInt();
+//		return new DivInstruction(label, r, s1, s2);
+//	case "out":
+//		r = scanInt();
+//		return new OutInstruction(label, r);
+//	case "lin":
+//		x = scanInt();
+//		s1 = scanInt();
+//		return new LinInstruction(label, x, s1);
+//	case "bnz":
+//		s1 = scanInt();
+//		l2 = scan();	// Scan label
+//		return new BnzInstruction(label, s1, l2);
+//	}
+//
+//	return null;
+//}
